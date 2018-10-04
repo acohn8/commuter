@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import styles from './SearchContainer.module.css';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   fetchAddressSuggestions,
@@ -11,6 +10,7 @@ import {
   setSelectedAddress
 } from '../../actions/locationActions';
 import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
+import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 
 class SearchContainer extends Component {
   handleChange = event => {
@@ -28,7 +28,6 @@ class SearchContainer extends Component {
     return (
       <div>
         <form>
-          <small >Where are you?</small>
           <SearchBar value={addressSearch} handleChange={this.handleChange} />
         </form>
         <div>
@@ -40,6 +39,9 @@ class SearchContainer extends Component {
               handleClick={this.handleClick}
             />
           ))}
+          <div>
+            <AddressMapContainer />
+          </div>
         </div>
       </div>
     );
