@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SearchBar from '../../components/searchBar/searchBar';
+import styles from './SearchContainer.module.css';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   fetchAddressSuggestions,
   fetchAddressInfo,
   setSelectedAddress
 } from '../../actions/locationActions';
-import AddressSuggestionList from '../../components/addressSuggestionList/addressSuggestionList';
+import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 
 class SearchContainer extends Component {
   handleChange = event => {
@@ -26,7 +27,10 @@ class SearchContainer extends Component {
     const { addressSearch, addressSuggestions } = this.props;
     return (
       <div>
-        <SearchBar value={addressSearch} handleChange={this.handleChange} />
+        <form>
+          <small >Where are you?</small>
+          <SearchBar value={addressSearch} handleChange={this.handleChange} />
+        </form>
         <div>
           {addressSuggestions.map(suggestion => (
             <AddressSuggestionList
@@ -42,7 +46,7 @@ class SearchContainer extends Component {
   }
 }
 
-SearchBar.propTypes = {
+SearchContainer.propTypes = {
   addressSearch: propTypes.string,
   addressSuggestions: propTypes.array,
   fetchAddressSuggestions: propTypes.func,

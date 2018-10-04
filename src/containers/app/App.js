@@ -1,10 +1,12 @@
 import React from 'react';
-import './App.css';
-import SearchContainer from '../searchContainer/searchContainer';
+import styles from './App.module.css';
+import SearchContainer from '../SearchContainer/SearchContainer';
 
 const App = () => (
-  <div>
-    <SearchContainer />
+  <div className={styles.wrapper}>
+    <div className={styles.container}>
+      <SearchContainer />
+    </div>
   </div>
 );
 
