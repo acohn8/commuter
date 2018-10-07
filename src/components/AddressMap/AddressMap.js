@@ -15,6 +15,12 @@ export default class AddressMap extends React.Component {
   }
 
   componentDidUpdate() {
+    if (this.map.getLayer('location')) {
+      this.map.removeLayer('location');
+    }
+    if (this.map.getSource('location')) {
+      this.map.removeSource('location');
+    }
     this.map.addLayer(this.props.points);
   }
 

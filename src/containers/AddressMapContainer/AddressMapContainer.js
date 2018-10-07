@@ -7,7 +7,7 @@ import styles from './AddressMapContainer.module.css';
 
 class AddressMapContainer extends Component {
   formatPoint = () => {
-    const { address, coords } = this.props;
+    const { toAddress, fromAddress } = this.props;
     return {
       id: 'location',
       type: 'circle',
@@ -20,10 +20,21 @@ class AddressMapContainer extends Component {
               type: 'Feature',
               geometry: {
                 type: 'Point',
-                coordinates: coords
+                coordinates: toAddress.coords
               },
               properties: {
-                title: address,
+                title: toAddress.address,
+                icon: 'marker'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: fromAddress.coords
+              },
+              properties: {
+                title: fromAddress.address,
                 icon: 'marker'
               }
             }
@@ -49,13 +60,13 @@ class AddressMapContainer extends Component {
 }
 
 AddressMapContainer.propTypes = {
-  address: propTypes.string,
-  coords: propTypes.arrayOf(propTypes.number)
+  toAddress: propTypes.object,
+  fromAddress: propTypes.object
 };
 
 const mapStateToProps = state => ({
-  address: state.address.selectedAddress,
-  coords: state.address.selectedCoords
+  toAddress: state.address.toAddress,
+  fromAddress: state.address.fromAddress
 });
 
 export default connect(mapStateToProps)(AddressMapContainer);

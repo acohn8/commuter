@@ -13,8 +13,15 @@ import AddressSuggestionList from '../../components/AddressSuggestionList/Addres
 import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 
 class SearchContainer extends Component {
+  state = { focus: '' };
+
   handleChange = (event, location) => {
     const address = event.target.value;
+    if (location === 'to') {
+      this.setState({ focus: 'to' });
+    } else if (location === 'from') {
+      this.setState({ focus: 'from' });
+    }
     this.props.fetchAddressInfo(address, location);
     const debounceChange = debounce(
       () => this.props.fetchAddressSuggestions(address),
@@ -24,7 +31,7 @@ class SearchContainer extends Component {
   };
 
   handleClick = address => {
-    this.props.setSelectedAddress(address);
+    this.props.setSelectedAddress(address, this.state.focus);
   };
 
   render() {
@@ -86,7 +93,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchAddressSuggestions(address)),
   fetchAddressInfo: (address, location) =>
     dispatch(fetchAddressInfo(address, location)),
-  setSelectedAddress: address => dispatch(setSelectedAddress(address))
+  setSelectedAddress: (address, location) =>
+    dispatch(setSelectedAddress(address, location))
 });
 
 export default connect(
