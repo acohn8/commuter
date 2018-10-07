@@ -1,5 +1,6 @@
 const initialState = {
-  addressSearch: '',
+  toAddressSearch: '',
+  fromAddressSearch: '',
   addressSuggestions: [],
   selectedAddress: '',
   selectedCoords: []
@@ -7,10 +8,16 @@ const initialState = {
 
 const addressReducer = (previousState = initialState, action) => {
   switch (action.type) {
-    case 'SET_ADDRESS_SEARCH':
+    case 'SET_TO_ADDRESS_SEARCH':
+      console.log(action);
       return {
         ...previousState,
-        addressSearch: action.address
+        toAddressSearch: action.address
+      };
+    case 'SET_FROM_ADDRESS_SEARCH':
+      return {
+        ...previousState,
+        fromAddressSearch: action.address
       };
     case 'SET_ADDRESS_SUGGESTIONS':
       return {

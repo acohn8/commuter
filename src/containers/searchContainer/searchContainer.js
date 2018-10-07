@@ -13,9 +13,13 @@ import AddressSuggestionList from '../../components/AddressSuggestionList/Addres
 import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 
 class SearchContainer extends Component {
-  handleChange = event => {
-    this.props.fetchAddressInfo(event.target.value);
-    const debounceChange = debounce(this.props.fetchAddressSuggestions, 600);
+  handleChange = (event, location) => {
+    const address = event.target.value;
+    this.props.fetchAddressInfo(address, location);
+    const debounceChange = debounce(
+      () => this.props.fetchAddressSuggestions(address),
+      600
+    );
     debounceChange();
   };
 
@@ -24,11 +28,26 @@ class SearchContainer extends Component {
   };
 
   render() {
-    const { addressSearch, addressSuggestions } = this.props;
+    const {
+      toAddressSearch,
+      fromAddressSearch,
+      addressSuggestions
+    } = this.props;
     return (
       <div>
         <form>
-          <SearchBar value={addressSearch} handleChange={this.handleChange} />
+          <p>From:</p>
+          <SearchBar
+            value={fromAddressSearch}
+            handleChange={this.handleChange}
+            location={'from'}
+          />
+          <p>To:</p>
+          <SearchBar
+            value={toAddressSearch}
+            handleChange={this.handleChange}
+            location={'to'}
+          />
         </form>
         <div>
           {addressSuggestions.map(suggestion => (
@@ -57,13 +76,16 @@ SearchContainer.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  addressSearch: state.address.addressSearch,
+  toAddressSearch: state.address.toAddressSearch,
+  fromAddressSearch: state.address.fromAddressSearch,
   addressSuggestions: state.address.addressSuggestions
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAddressSuggestions: () => dispatch(fetchAddressSuggestions()),
-  fetchAddressInfo: address => dispatch(fetchAddressInfo(address)),
+  fetchAddressSuggestions: address =>
+    dispatch(fetchAddressSuggestions(address)),
+  fetchAddressInfo: (address, location) =>
+    dispatch(fetchAddressInfo(address, location)),
   setSelectedAddress: address => dispatch(setSelectedAddress(address))
 });
 
