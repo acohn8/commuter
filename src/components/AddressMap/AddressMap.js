@@ -1,3 +1,4 @@
+import distance from '@turf/distance';
 import mapboxgl from 'mapbox-gl';
 import React from 'react';
 
@@ -11,6 +12,9 @@ export default class AddressMap extends React.Component {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v9'
+    });
+    this.map.on('load', () => {
+      this.addMetroLayers();
     });
   }
 
@@ -27,6 +31,52 @@ export default class AddressMap extends React.Component {
   componentWillUnmount() {
     this.map.remove();
   }
+
+  addMetroLayers = () => {
+    this.map.addSource('stations', {
+      url: 'mapbox://adamcohn.apen5at2',
+      type: 'vector'
+    });
+
+    this.map.addSource('lines', {
+      url: 'mapbox://adamcohn.dkewbo9p',
+      type: 'vector'
+    });
+
+    this.map.addLayer({
+      id: 'metro-lines',
+      type: 'line',
+      source: {
+        type: 'vector',
+        url: 'mapbox://adamcohn.dkewbo9p'
+      },
+      'source-layer': 'Metro_Lines',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#ff69b4',
+        'line-width': 1
+      }
+    });
+
+    this.map.addLayer({
+      id: 'metro-stations',
+      type: 'circle',
+      source: {
+        type: 'vector',
+        url: 'mapbox://adamcohn.apen5at2'
+      },
+      'source-layer': 'Metro_Stations_Regional',
+      paint: {
+        'circle-color': '#F15A2D',
+        'circle-radius': 6,
+        'circle-stroke-width': 1.7,
+        'circle-stroke-color': '#ffffff'
+      }
+    });
+  };
 
   render() {
     const style = {
