@@ -39,7 +39,7 @@ export default class AddressMap extends React.Component {
     });
 
     this.map.addSource('lines', {
-      url: 'mapbox://adamcohn.dkewbo9p',
+      url: 'mapbox://adamcohn.aqrkj8wv',
       type: 'vector'
     });
 
@@ -48,16 +48,40 @@ export default class AddressMap extends React.Component {
       type: 'line',
       source: {
         type: 'vector',
-        url: 'mapbox://adamcohn.dkewbo9p'
+        url: 'mapbox://adamcohn.aqrkj8wv'
       },
-      'source-layer': 'Metro_Lines',
+      'source-layer': 'Metro_Lines_Regional',
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
       },
       paint: {
-        'line-color': '#ff69b4',
-        'line-width': 1
+        'line-offset': {
+          property: 'Order',
+          type: 'categorical',
+
+          stops: [[1, 0], [2, 5], [3, 10]]
+        },
+        'line-color': [
+          'match',
+          ['get', 'NAME'],
+          'red',
+          '#ff0100',
+          'yellow',
+          '#feff00',
+          'orange',
+          '#f28227',
+          'green',
+          '#02B050',
+          'blue',
+          '#0070c0',
+          'orange - rush +',
+          '#f28227',
+          'silver',
+          '#a6a6a6',
+          /* other */ '#ccc'
+        ],
+        'line-width': 10
       }
     });
 
@@ -70,10 +94,10 @@ export default class AddressMap extends React.Component {
       },
       'source-layer': 'Metro_Stations_Regional',
       paint: {
-        'circle-color': '#F15A2D',
         'circle-radius': 6,
         'circle-stroke-width': 1.7,
-        'circle-stroke-color': '#ffffff'
+        'circle-stroke-color': '#000',
+        'circle-color': '#ffffff'
       }
     });
   };
