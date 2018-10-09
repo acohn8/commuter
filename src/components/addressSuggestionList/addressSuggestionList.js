@@ -1,9 +1,11 @@
 import propTypes from 'prop-types';
 import React from 'react';
 
+import styles from './addressSuggestions.module.css';
+
 const AddressSuggestionList = ({ address, handleClick, coords }) => (
   <div
-    className="address-item"
+    className={styles.addressItem}
     onClick={() => handleClick({ coords: coords, address: address })}
   >
     {address}

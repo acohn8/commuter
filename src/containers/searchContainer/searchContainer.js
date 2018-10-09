@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   fetchAddressSuggestions,
   fetchAddressInfo,
   setSelectedAddress,
   setFocusedField
 } from '../../actions/locationActions';
-import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
+import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import styles from './SearchContainer.module.css';
 
 class SearchContainer extends Component {
   handleChange = (event, location) => {
@@ -57,32 +58,41 @@ class SearchContainer extends Component {
     const { addressSuggestions } = this.props;
     return (
       <div>
-        <form>
-          <p>From:</p>
-          <SearchBar
-            value={this.determineSearchValue('from')}
-            handleChange={this.handleChange}
-            location={'from'}
-          />
-          <p>To:</p>
-          <SearchBar
-            value={this.determineSearchValue('to')}
-            handleChange={this.handleChange}
-            location={'to'}
-          />
-        </form>
-        <div>
-          {addressSuggestions.map(suggestion => (
-            <AddressSuggestionList
-              key={suggestion.id}
-              address={suggestion.place_name}
-              coords={suggestion.center}
-              handleClick={this.handleClick}
+        <div className={styles.suggestionContainer}>
+          <form className={styles.searchForm}>
+            <p>From:</p>
+            <SearchBar
+              value={this.determineSearchValue('from')}
+              handleChange={this.handleChange}
+              location={'from'}
             />
-          ))}
-          <div>
-            <AddressMapContainer />
-          </div>
+            {this.props.fromAddress && (
+              <>
+                <p>To:</p>
+                <SearchBar
+                  value={this.determineSearchValue('to')}
+                  handleChange={this.handleChange}
+                  location={'to'}
+                />{' '}
+              </>
+            )}
+          </form>
+          {this.props.addressSuggestions && (
+            <div className={styles.suggestionOverlay}>
+              {addressSuggestions.map(suggestion => (
+                <AddressSuggestionList
+                  key={suggestion.id}
+                  address={suggestion.place_name}
+                  coords={suggestion.center}
+                  handleClick={this.handleClick}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <AddressMapContainer />
         </div>
       </div>
     );
@@ -106,6 +116,7 @@ const mapStateToProps = state => ({
   addressSuggestions: state.address.addressSuggestions,
   focusedSearchField: state.address.focusedSearchField,
   toAddress: state.address.toAddress.address,
+  fromAddress: state.address.fromAddress.address,
   toStations: state.stations.toStationOptions
 });
 

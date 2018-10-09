@@ -139,9 +139,9 @@ export default class AddressMap extends React.Component {
     const filteredStations = this.addDistanceToStations().filter(
       station => station.properties.distance < 2
     );
-    const sortedStations = filteredStations.sort(
-      (a, b) => a.properties.distance - b.properties.distance
-    );
+    const sortedStations = filteredStations
+      .sort((a, b) => a.properties.distance - b.properties.distance)
+      .slice(0, 2);
     this.props.setStationOptions(sortedStations, this.props.focusedSearchField);
   };
 
