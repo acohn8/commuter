@@ -117,7 +117,10 @@ export default class AddressMap extends React.Component {
   };
 
   addDistanceToStations = () => {
-    const from = this.props.from.coords;
+    const from =
+      this.props.focusedSearchField === 'from'
+        ? this.props.from.coords
+        : this.props.to.coords;
     const stations = this.getStationsFromTile();
     return stations.map(station => {
       station.properties.distance = distance(
