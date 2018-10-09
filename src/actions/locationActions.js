@@ -4,7 +4,7 @@ import * as constants from '../constants';
 
 const fetchAddressSuggestions = address => async dispatch => {
   if (address.length) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=pk.eyJ1IjoiYWRhbWNvaG4iLCJhIjoiY2pod2Z5ZWQzMDBtZzNxcXNvaW8xcGNiNiJ9.fHYsK6UNzqknxKuchhfp7A&country=us&proximity=-77.0369%2C38.9072&types=poi%2Cpoi.landmark%2Caddress%2Cplace&autocomplete=true`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=pk.eyJ1IjoiYWRhbWNvaG4iLCJhIjoiY2pod2Z5ZWQzMDBtZzNxcXNvaW8xcGNiNiJ9.fHYsK6UNzqknxKuchhfp7A&country=us&bbox=-77.44849350586648%2C38.629297792389735%2C-76.59430649414608%2C39.16369685437627&proximity=-77.0369%2C38.9072&types=poi%2Cpoi.landmark%2Caddress%2Cplace&autocomplete=true`;
     const response = await axios.get(url);
     return dispatch({
       type: constants.SET_ADDRESS_SUGGESTIONS,
