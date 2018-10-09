@@ -1,4 +1,5 @@
 import distance from '@turf/distance';
+import bbox from '@turf/bbox';
 import mapboxgl from 'mapbox-gl';
 import React from 'react';
 
@@ -20,19 +21,22 @@ export default class AddressMap extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.map.getLayer('location')) {
-      this.map.removeLayer('location');
-    }
-    if (this.map.getSource('location')) {
-      this.map.removeSource('location');
-    }
-    this.map.addLayer(this.props.points);
-    if (
-      (this.props.from.address && !this.props.fromStations.length) ||
-      (this.props.to.address && !this.props.toStations.length)
-    ) {
-      this.filterStations();
+  componentDidUpdate(prevProps) {
+    if (this.props.points !== prevProps.points) {
+      if (this.map.getLayer('location')) {
+        this.map.removeLayer('location');
+      }
+      if (this.map.getSource('location')) {
+        this.map.removeSource('location');
+      }
+      this.map.addLayer(this.props.points);
+      this.zoomToSelection();
+      if (
+        (this.props.from.address && !this.props.fromStations.length) ||
+        (this.props.to.address && !this.props.toStations.length)
+      ) {
+        this.filterStations();
+      }
     }
   }
 
@@ -108,6 +112,19 @@ export default class AddressMap extends React.Component {
         'circle-color': '#ffffff'
       }
     });
+  };
+
+  zoomToSelection = () => {
+    console.log(this.props.points);
+    if (this.props.points.source.data.features.length === 1) {
+      this.map.flyTo({
+        center: this.props.points.source.data.features[0].geometry.coordinates,
+        zoom: 12
+      });
+    } else if (this.props.points.source.data.features.length === 2) {
+      const bounds = bbox(this.map.getSource('location')._data);
+      this.map.fitBounds(bounds, { padding: 50 });
+    }
   };
 
   getStationsFromTile = () => {

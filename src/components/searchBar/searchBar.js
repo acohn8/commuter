@@ -5,6 +5,7 @@ import styles from './SearchBar.module.css';
 
 const SearchBar = ({ value, handleChange, location }) => (
   <input
+    type="text"
     className={styles.searchBar}
     value={value}
     onChange={e => handleChange(e, location)}

@@ -33,12 +33,14 @@ const addressReducer = (previousState = initialState, action) => {
     case 'SET_TO_ADDRESS_SELECTION':
       return {
         ...previousState,
-        toAddress: { address: action.address, coords: action.coords }
+        toAddress: { address: action.address, coords: action.coords },
+        addressSuggestions: []
       };
     case 'SET_FROM_ADDRESS_SELECTION':
       return {
         ...previousState,
-        fromAddress: { address: action.address, coords: action.coords }
+        fromAddress: { address: action.address, coords: action.coords },
+        addressSuggestions: []
       };
     case 'SET_FOCUSED_SEARCH_FIELD':
       return {

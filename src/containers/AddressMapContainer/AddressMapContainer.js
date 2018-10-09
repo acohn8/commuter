@@ -7,8 +7,18 @@ import setStationOptions from '../../actions/stationActions';
 import styles from './AddressMapContainer.module.css';
 
 class AddressMapContainer extends Component {
-  formatPoint = () => {
+  combineAddresses = () => {
+    const addresses = [];
     const { toAddress, fromAddress } = this.props;
+    if (toAddress.coords.length) {
+      addresses.push(toAddress);
+    }
+    if (fromAddress.coords.length) {
+      addresses.push(fromAddress);
+    }
+    return addresses;
+  };
+  formatPoint = () => {
     return {
       id: 'location',
       type: 'circle',
@@ -16,30 +26,17 @@ class AddressMapContainer extends Component {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: toAddress.coords
-              },
-              properties: {
-                title: toAddress.address,
-                icon: 'marker'
-              }
+          features: this.combineAddresses().map(address => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: address.coords
             },
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: fromAddress.coords
-              },
-              properties: {
-                title: fromAddress.address,
-                icon: 'marker'
-              }
+            properties: {
+              title: address.address,
+              icon: 'marker'
             }
-          ]
+          }))
         }
       },
       paint: {
