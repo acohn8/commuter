@@ -11,10 +11,18 @@ export default class AddressMap extends React.Component {
   componentDidMount() {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v9'
+      style: 'mapbox://styles/adamcohn/cjmur7tfa3m1s2rnuz48wq9qc',
+      center: [-77.0214, 38.897],
+      zoom: 9
     });
     this.map.on('load', () => {
       this.addMetroLayers();
+      console.log(this.map.getSource('composite').vectorLayerIds);
+      console.log(
+        this.map.querySourceFeatures('composite', {
+          sourceLayer: 'Metro_Stations_Regional'
+        })
+      );
     });
   }
 
@@ -81,7 +89,7 @@ export default class AddressMap extends React.Component {
           '#a6a6a6',
           /* other */ '#ccc'
         ],
-        'line-width': 10
+        'line-width': 8
       }
     });
 
@@ -94,7 +102,7 @@ export default class AddressMap extends React.Component {
       },
       'source-layer': 'Metro_Stations_Regional',
       paint: {
-        'circle-radius': 6,
+        'circle-radius': 4.5,
         'circle-stroke-width': 1.7,
         'circle-stroke-color': '#000',
         'circle-color': '#ffffff'
