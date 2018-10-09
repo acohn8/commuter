@@ -7,22 +7,23 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   fetchAddressSuggestions,
   fetchAddressInfo,
-  setSelectedAddress
+  setSelectedAddress,
+  setFocusedField
 } from '../../actions/locationActions';
 import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 
 class SearchContainer extends Component {
-  state = { focus: '' };
-
   handleChange = (event, location) => {
     const address = event.target.value;
     if (location === 'to') {
-      this.setState({ focus: 'to' });
+      this.props.setFocusedField('to');
     } else if (location === 'from') {
-      this.setState({ focus: 'from' });
+      this.props.setFocusedField('from');
     }
+
     this.props.fetchAddressInfo(address, location);
+
     const debounceChange = debounce(
       () => this.props.fetchAddressSuggestions(address),
       600
@@ -31,27 +32,41 @@ class SearchContainer extends Component {
   };
 
   handleClick = address => {
-    this.props.setSelectedAddress(address, this.state.focus);
+    this.props.setSelectedAddress(address, this.props.focusedSearchField);
+  };
+
+  determineSearchValue = location => {
+    const {
+      fromAddress,
+      fromAddressSearch,
+      toAddress,
+      toAddressSearch
+    } = this.props;
+    if (location === 'from' && !fromAddress) {
+      return fromAddressSearch;
+    } else if (location === 'from' && fromAddress) {
+      return fromAddress;
+    } else if (location === 'to' && !toAddress) {
+      return toAddressSearch;
+    } else if (location === 'to' && toAddress) {
+      return toAddress;
+    }
   };
 
   render() {
-    const {
-      toAddressSearch,
-      fromAddressSearch,
-      addressSuggestions
-    } = this.props;
+    const { addressSuggestions } = this.props;
     return (
       <div>
         <form>
           <p>From:</p>
           <SearchBar
-            value={fromAddressSearch}
+            value={this.determineSearchValue('from')}
             handleChange={this.handleChange}
             location={'from'}
           />
           <p>To:</p>
           <SearchBar
-            value={toAddressSearch}
+            value={this.determineSearchValue('to')}
             handleChange={this.handleChange}
             location={'to'}
           />
@@ -79,13 +94,19 @@ SearchContainer.propTypes = {
   addressSuggestions: propTypes.array,
   fetchAddressSuggestions: propTypes.func,
   fetchAddressInfo: propTypes.func,
+  toAddress: propTypes.string,
+  fromAddress: propTypes.string,
+  focusedSearchField: propTypes.string,
   setSelectedAddress: propTypes.func
 };
 
 const mapStateToProps = state => ({
   toAddressSearch: state.address.toAddressSearch,
   fromAddressSearch: state.address.fromAddressSearch,
-  addressSuggestions: state.address.addressSuggestions
+  addressSuggestions: state.address.addressSuggestions,
+  focusedSearchField: state.address.focusedSearchField,
+  toAddress: state.address.toAddress.address,
+  toStations: state.stations.toStationOptions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -94,7 +115,8 @@ const mapDispatchToProps = dispatch => ({
   fetchAddressInfo: (address, location) =>
     dispatch(fetchAddressInfo(address, location)),
   setSelectedAddress: (address, location) =>
-    dispatch(setSelectedAddress(address, location))
+    dispatch(setSelectedAddress(address, location)),
+  setFocusedField: field => dispatch(setFocusedField(field))
 });
 
 export default connect(

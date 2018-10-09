@@ -28,8 +28,11 @@ export default class AddressMap extends React.Component {
       this.map.removeSource('location');
     }
     this.map.addLayer(this.props.points);
-    if (this.props.from) {
-      this.sortStations();
+    if (
+      (this.props.from.address && !this.props.fromStations.length) ||
+      (this.props.to.address && !this.props.toStations.length)
+    ) {
+      this.filterStations();
     }
   }
 
@@ -128,11 +131,15 @@ export default class AddressMap extends React.Component {
     });
   };
 
-  sortStations = () => {
-    const sortedStations = this.addDistanceToStations().sort(
+  filterStations = () => {
+    //filters stations within 2 miles. TODO: handle suburbs where people may live further from stations
+    const filteredStations = this.addDistanceToStations().filter(
+      station => station.properties.distance < 2
+    );
+    const sortedStations = filteredStations.sort(
       (a, b) => a.properties.distance - b.properties.distance
     );
-    return sortedStations;
+    this.props.setStationOptions(sortedStations, this.props.focusedSearchField);
   };
 
   render() {

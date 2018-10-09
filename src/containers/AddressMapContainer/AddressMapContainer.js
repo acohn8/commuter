@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 import AddressMap from '../../components/AddressMap/AddressMap';
+import setStationOptions from '../../actions/stationActions';
 import styles from './AddressMapContainer.module.css';
 
 class AddressMapContainer extends Component {
@@ -57,6 +58,10 @@ class AddressMapContainer extends Component {
           points={this.formatPoint()}
           from={this.props.fromAddress}
           to={this.props.toAddress}
+          setStationOptions={this.props.setStationOptions}
+          focusedSearchField={this.props.focusedSearchField}
+          fromStations={this.props.fromStations}
+          toStations={this.props.toStations}
         />
       </div>
     );
@@ -65,12 +70,27 @@ class AddressMapContainer extends Component {
 
 AddressMapContainer.propTypes = {
   toAddress: propTypes.object,
-  fromAddress: propTypes.object
+  fromAddress: propTypes.object,
+  fromStations: propTypes.array,
+  toStations: propTypes.array,
+  setStationOptions: propTypes.func,
+  focusedSearchField: propTypes.string
 };
 
 const mapStateToProps = state => ({
   toAddress: state.address.toAddress,
-  fromAddress: state.address.fromAddress
+  fromAddress: state.address.fromAddress,
+  toStations: state.stations.toStationOptions,
+  fromStations: state.stations.fromStationOptions,
+  focusedSearchField: state.address.focusedSearchField
 });
 
-export default connect(mapStateToProps)(AddressMapContainer);
+const mapDispatchToProps = dispatch => ({
+  setStationOptions: (stations, location) =>
+    dispatch(setStationOptions(stations, location))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddressMapContainer);

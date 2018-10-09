@@ -43,4 +43,12 @@ const setSelectedAddress = ({ address, coords }, location) => dispatch => {
   });
 };
 
-export { fetchAddressInfo, fetchAddressSuggestions, setSelectedAddress };
+const setFocusedField = focusedSearchField => dispatch =>
+  dispatch({ type: constants.SET_FOCUSED_SEARCH_FIELD, focusedSearchField });
+
+export {
+  fetchAddressInfo,
+  fetchAddressSuggestions,
+  setSelectedAddress,
+  setFocusedField
+};

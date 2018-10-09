@@ -3,7 +3,8 @@ const initialState = {
   fromAddressSearch: '',
   addressSuggestions: [],
   toAddress: { address: '', coords: [] },
-  fromAddress: { address: '', coords: [] }
+  fromAddress: { address: '', coords: [] },
+  focusedSearchField: ''
 };
 
 const addressReducer = (previousState = initialState, action) => {
@@ -35,10 +36,14 @@ const addressReducer = (previousState = initialState, action) => {
         toAddress: { address: action.address, coords: action.coords }
       };
     case 'SET_FROM_ADDRESS_SELECTION':
-      console.log(action);
       return {
         ...previousState,
         fromAddress: { address: action.address, coords: action.coords }
+      };
+    case 'SET_FOCUSED_SEARCH_FIELD':
+      return {
+        ...previousState,
+        focusedSearchField: action.focusedSearchField
       };
     default:
       return previousState;
