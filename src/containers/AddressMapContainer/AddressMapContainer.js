@@ -53,7 +53,11 @@ class AddressMapContainer extends Component {
   render() {
     return (
       <div className={styles.mapContainer}>
-        <AddressMap points={this.formatPoint()} />
+        <AddressMap
+          points={this.formatPoint()}
+          from={this.props.fromAddress}
+          to={this.props.toAddress}
+        />
       </div>
     );
   }

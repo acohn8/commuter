@@ -17,12 +17,6 @@ export default class AddressMap extends React.Component {
     });
     this.map.on('load', () => {
       this.addMetroLayers();
-      console.log(this.map.getSource('composite').vectorLayerIds);
-      console.log(
-        this.map.querySourceFeatures('composite', {
-          sourceLayer: 'Metro_Stations_Regional'
-        })
-      );
     });
   }
 
@@ -34,6 +28,9 @@ export default class AddressMap extends React.Component {
       this.map.removeSource('location');
     }
     this.map.addLayer(this.props.points);
+    if (this.props.from) {
+      this.sortStations();
+    }
   }
 
   componentWillUnmount() {
@@ -108,6 +105,34 @@ export default class AddressMap extends React.Component {
         'circle-color': '#ffffff'
       }
     });
+  };
+
+  getStationsFromTile = () => {
+    return this.map.queryRenderedFeatures({
+      layers: ['metro-stations-regional']
+    });
+  };
+
+  addDistanceToStations = () => {
+    const from = this.props.from.coords;
+    const stations = this.getStationsFromTile();
+    return stations.map(station => {
+      station.properties.distance = distance(
+        from,
+        station.geometry.coordinates,
+        {
+          units: 'miles'
+        }
+      );
+      return station;
+    });
+  };
+
+  sortStations = () => {
+    const sortedStations = this.addDistanceToStations().sort(
+      (a, b) => a.properties.distance - b.properties.distance
+    );
+    return sortedStations;
   };
 
   render() {
