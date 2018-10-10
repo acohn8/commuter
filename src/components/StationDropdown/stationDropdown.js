@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class StationDropdown extends React.Component {
+export default class StationDropdown extends Component {
   state = { toStation: {}, fromStation: {} };
 
   componentDidMount() {

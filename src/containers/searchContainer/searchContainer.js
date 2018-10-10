@@ -9,7 +9,6 @@ import {
   setSelectedAddress,
   setFocusedField
 } from '../../actions/locationActions';
-import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { selectStation } from '../../actions/stationActions';
@@ -64,57 +63,51 @@ class SearchContainer extends Component {
       selectStation
     } = this.props;
     return (
-      <div>
-        <div className={styles.suggestionContainer}>
-          <form className={styles.searchForm}>
-            <p>From:</p>
-            <SearchBar
-              value={this.determineSearchValue('from')}
-              handleChange={this.handleChange}
+      <div className={styles.suggestionContainer}>
+        <form className={styles.searchForm}>
+          <p>From:</p>
+          <SearchBar
+            value={this.determineSearchValue('from')}
+            handleChange={this.handleChange}
+            location={'from'}
+          />
+          {fromStations.length > 0 && (
+            <StationDropdown
+              stations={fromStations}
+              selectStation={selectStation}
               location={'from'}
             />
-            {fromStations.length > 0 && (
-              <StationDropdown
-                stations={fromStations}
-                selectStation={selectStation}
-                location={'from'}
+          )}
+          {this.props.fromAddress && (
+            <>
+              <p>To:</p>
+              <SearchBar
+                value={this.determineSearchValue('to')}
+                handleChange={this.handleChange}
+                location={'to'}
               />
-            )}
-            {this.props.fromAddress && (
-              <>
-                <p>To:</p>
-                <SearchBar
-                  value={this.determineSearchValue('to')}
-                  handleChange={this.handleChange}
+              {toStations.length > 0 && (
+                <StationDropdown
+                  stations={toStations}
+                  selectStation={selectStation}
                   location={'to'}
                 />
-                {toStations.length > 0 && (
-                  <StationDropdown
-                    stations={toStations}
-                    selectStation={selectStation}
-                    location={'to'}
-                  />
-                )}
-              </>
-            )}
-          </form>
-          {this.props.addressSuggestions && (
-            <div className={styles.suggestionOverlay}>
-              {addressSuggestions.map(suggestion => (
-                <AddressSuggestionList
-                  key={suggestion.id}
-                  address={suggestion.place_name}
-                  coords={suggestion.center}
-                  handleClick={this.handleClick}
-                />
-              ))}
-            </div>
+              )}
+            </>
           )}
-        </div>
-
-        <div>
-          <AddressMapContainer />
-        </div>
+        </form>
+        {this.props.addressSuggestions && (
+          <div className={styles.suggestionOverlay}>
+            {addressSuggestions.map(suggestion => (
+              <AddressSuggestionList
+                key={suggestion.id}
+                address={suggestion.place_name}
+                coords={suggestion.center}
+                handleClick={this.handleClick}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
