@@ -2,7 +2,7 @@ import React from 'react';
 
 const NextTrains = ({ train }) => (
   <div>
-    {train.Destination}: {train.minutesAway}
+    {train.Destination}: {Math.round(train.minutesAway, 2)}
   </div>
 );
 

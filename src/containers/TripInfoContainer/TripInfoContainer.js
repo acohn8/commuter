@@ -17,12 +17,12 @@ class TripInfoContainer extends Component {
     const sortedTrains = {};
     lines.forEach(line => {
       sortedTrains[line] = {};
-      const firstTrack = nextTrains.filter(
-        train => train.Line === line && train.Group === '1'
-      );
-      const secondTrack = nextTrains.filter(
-        train => train.Line === line && train.Group === '2'
-      );
+      const firstTrack = nextTrains
+        .filter(train => train.Line === line && train.Group === '1')
+        .sort((a, b) => a.minutesAway - b.minutesAway);
+      const secondTrack = nextTrains
+        .filter(train => train.Line === line && train.Group === '2')
+        .sort((a, b) => a.minutesAway - b.minutesAway);
       sortedTrains[line][1] = firstTrack;
       sortedTrains[line][2] = secondTrack;
     });
@@ -34,23 +34,25 @@ class TripInfoContainer extends Component {
     const tracks = Object.keys(trains);
     return (
       <div>
-        {tracks.map(track => (
-          <div>
-            <h4>{track}</h4>
-            <div className={styles.trainsContainer}>
-              {trains[track]['1'].map(train => (
-                <div className={styles.nextTrains}>
-                  <NextTrains train={train} />
-                </div>
-              ))}
-              {trains[track]['2'].map(train => (
-                <div className={styles.nextTrains}>
-                  <NextTrains train={train} />
-                </div>
-              ))}
+        <div className={styles.linesContainer}>
+          {tracks.map(track => (
+            <div className={styles.stationLines}>
+              <h4 className={styles.lineHeader}>{track}</h4>
+              <div className={styles.trainsContainer}>
+                {trains[track]['1'].map(train => (
+                  <div className={styles.nextTrains}>
+                    <NextTrains train={train} />
+                  </div>
+                ))}
+                {trains[track]['2'].map(train => (
+                  <div className={styles.nextTrains}>
+                    <NextTrains train={train} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   }

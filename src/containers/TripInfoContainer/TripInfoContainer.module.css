@@ -1,12 +1,27 @@
 .trainsContainer {
-  height: 300px;
+  width: 500px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-flow: row wrap;
 }
 
 .nextTrains {
-  max-width: 50%;
-  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+.linesContainer {
+  width: 1000px;
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+
+.stationLines {
+  width: 50%;
+}
+
+.lineHeader {
+  text-align: center;
 }
