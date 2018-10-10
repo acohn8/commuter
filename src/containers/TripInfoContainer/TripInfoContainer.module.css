@@ -1,0 +1,12 @@
+.trainsContainer {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.nextTrains {
+  max-width: 50%;
+  margin: auto;
+}
