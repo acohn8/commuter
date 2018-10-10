@@ -157,7 +157,8 @@ export default class AddressMap extends React.Component {
     );
     const sortedStations = filteredStations
       .sort((a, b) => a.properties.distance - b.properties.distance)
-      .slice(0, 2);
+      .slice(0, 2)
+      .map(station => station.properties);
     this.props.setStationOptions(sortedStations, this.props.focusedSearchField);
   };
 

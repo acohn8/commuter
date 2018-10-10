@@ -8,4 +8,12 @@ const setStationOptions = (stations, location) => dispatch => {
   }
 };
 
-export default setStationOptions;
+const selectStation = (station, location) => dispatch => {
+  if (location === 'from') {
+    dispatch({ type: constants.SET_SELECTED_FROM_STATION, station });
+  } else if (location === 'to') {
+    dispatch({ type: constants.SET_SELECTED_TO_STATION, station });
+  }
+};
+
+export { setStationOptions, selectStation };

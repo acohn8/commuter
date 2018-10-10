@@ -12,6 +12,7 @@ import {
 import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import { selectStation } from '../../actions/stationActions';
 import styles from './SearchContainer.module.css';
 import StationDropdown from '../../components/StationDropdown/stationDropdown';
 
@@ -56,7 +57,12 @@ class SearchContainer extends Component {
   };
 
   render() {
-    const { addressSuggestions, fromStations, toStations } = this.props;
+    const {
+      addressSuggestions,
+      fromStations,
+      toStations,
+      selectStation
+    } = this.props;
     return (
       <div>
         <div className={styles.suggestionContainer}>
@@ -68,7 +74,11 @@ class SearchContainer extends Component {
               location={'from'}
             />
             {fromStations.length > 0 && (
-              <StationDropdown stations={fromStations} />
+              <StationDropdown
+                stations={fromStations}
+                selectStation={selectStation}
+                location={'from'}
+              />
             )}
             {this.props.fromAddress && (
               <>
@@ -79,7 +89,11 @@ class SearchContainer extends Component {
                   location={'to'}
                 />
                 {toStations.length > 0 && (
-                  <StationDropdown stations={toStations} />
+                  <StationDropdown
+                    stations={toStations}
+                    selectStation={selectStation}
+                    location={'to'}
+                  />
                 )}
               </>
             )}
@@ -109,14 +123,15 @@ class SearchContainer extends Component {
 SearchContainer.propTypes = {
   addressSearch: propTypes.string,
   addressSuggestions: propTypes.array,
-  fetchAddressSuggestions: propTypes.func,
-  fetchAddressInfo: propTypes.func,
   toAddress: propTypes.string,
   fromAddress: propTypes.string,
   focusedSearchField: propTypes.string,
-  setSelectedAddress: propTypes.func,
   fromStations: propTypes.array,
-  toStations: propTypes.array
+  toStations: propTypes.array,
+  setSelectedAddress: propTypes.func,
+  fetchAddressSuggestions: propTypes.func,
+  fetchAddressInfo: propTypes.func,
+  selectStation: propTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -137,7 +152,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchAddressInfo(address, location)),
   setSelectedAddress: (address, location) =>
     dispatch(setSelectedAddress(address, location)),
-  setFocusedField: field => dispatch(setFocusedField(field))
+  setFocusedField: field => dispatch(setFocusedField(field)),
+  selectStation: (station, location) =>
+    dispatch(selectStation(station, location))
 });
 
 export default connect(

@@ -1,6 +1,8 @@
 const initialState = {
   fromStationOptions: [],
-  toStationOptions: []
+  toStationOptions: [],
+  selectedFromStation: '',
+  selectedToStation: ''
 };
 
 const stationsReducer = (previousState = initialState, action) => {
@@ -14,6 +16,16 @@ const stationsReducer = (previousState = initialState, action) => {
       return {
         ...previousState,
         fromStationOptions: action.stations
+      };
+    case 'SET_SELECTED_FROM_STATION':
+      return {
+        ...previousState,
+        selectedFromStation: action.station
+      };
+    case 'SET_SELECTED_TO_STATION':
+      return {
+        ...previousState,
+        selectedToStation: action.station
       };
     default:
       return previousState;

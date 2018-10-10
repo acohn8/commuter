@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 import AddressMap from '../../components/AddressMap/AddressMap';
-import setStationOptions from '../../actions/stationActions';
+import { setStationOptions } from '../../actions/stationActions';
 import styles from './AddressMapContainer.module.css';
 
 class AddressMapContainer extends Component {
