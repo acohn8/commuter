@@ -13,6 +13,7 @@ import AddressMapContainer from '../AddressMapContainer/AddressMapContainer';
 import AddressSuggestionList from '../../components/AddressSuggestionList/AddressSuggestionList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import styles from './SearchContainer.module.css';
+import StationDropdown from '../../components/StationDropdown/stationDropdown';
 
 class SearchContainer extends Component {
   handleChange = (event, location) => {
@@ -55,7 +56,7 @@ class SearchContainer extends Component {
   };
 
   render() {
-    const { addressSuggestions } = this.props;
+    const { addressSuggestions, fromStations, toStations } = this.props;
     return (
       <div>
         <div className={styles.suggestionContainer}>
@@ -66,6 +67,9 @@ class SearchContainer extends Component {
               handleChange={this.handleChange}
               location={'from'}
             />
+            {fromStations.length > 0 && (
+              <StationDropdown stations={fromStations} />
+            )}
             {this.props.fromAddress && (
               <>
                 <p>To:</p>
@@ -73,7 +77,10 @@ class SearchContainer extends Component {
                   value={this.determineSearchValue('to')}
                   handleChange={this.handleChange}
                   location={'to'}
-                />{' '}
+                />
+                {toStations.length > 0 && (
+                  <StationDropdown stations={toStations} />
+                )}
               </>
             )}
           </form>
@@ -107,7 +114,9 @@ SearchContainer.propTypes = {
   toAddress: propTypes.string,
   fromAddress: propTypes.string,
   focusedSearchField: propTypes.string,
-  setSelectedAddress: propTypes.func
+  setSelectedAddress: propTypes.func,
+  fromStations: propTypes.array,
+  toStations: propTypes.array
 };
 
 const mapStateToProps = state => ({
@@ -117,6 +126,7 @@ const mapStateToProps = state => ({
   focusedSearchField: state.address.focusedSearchField,
   toAddress: state.address.toAddress.address,
   fromAddress: state.address.fromAddress.address,
+  fromStations: state.stations.fromStationOptions,
   toStations: state.stations.toStationOptions
 });
 

@@ -115,11 +115,10 @@ export default class AddressMap extends React.Component {
   };
 
   zoomToSelection = () => {
-    console.log(this.props.points);
     if (this.props.points.source.data.features.length === 1) {
       this.map.flyTo({
         center: this.props.points.source.data.features[0].geometry.coordinates,
-        zoom: 12
+        zoom: 9
       });
     } else if (this.props.points.source.data.features.length === 2) {
       const bounds = bbox(this.map.getSource('location')._data);
