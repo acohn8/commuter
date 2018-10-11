@@ -9,8 +9,6 @@ const setStationOptions = (stations, location) => dispatch => {
 };
 
 const selectStation = (station, location) => dispatch => {
-  const stationId = station.TRAININFO_.split('#')[1].split('|')[0];
-  station.stationId = stationId;
   if (location === 'from') {
     dispatch({ type: constants.SET_SELECTED_FROM_STATION, station });
   } else if (location === 'to') {

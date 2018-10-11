@@ -159,7 +159,15 @@ export default class AddressMap extends React.Component {
       .sort((a, b) => a.properties.distance - b.properties.distance)
       .slice(0, 2)
       .map(station => station.properties);
-    this.props.setStationOptions(sortedStations, this.props.focusedSearchField);
+    const stationsWithIds = sortedStations.map(station => {
+      const stationId = station.TRAININFO_.split('#')[1].split('|')[0];
+      station.stationId = stationId;
+      return station;
+    });
+    this.props.setStationOptions(
+      stationsWithIds,
+      this.props.focusedSearchField
+    );
   };
 
   render() {

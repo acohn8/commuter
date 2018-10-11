@@ -12,7 +12,7 @@ const App = ({ fromStation }) => (
       <Grid.Row centered columns={2}>
         <SearchContainer />
       </Grid.Row>
-      {fromStation.stationId !== undefined && (
+      {fromStation && (
         <Grid.Row columns={1}>
           <Grid.Column>
             <TripInfoContainer />

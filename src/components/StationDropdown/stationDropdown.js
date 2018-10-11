@@ -5,31 +5,34 @@ export default class StationDropdown extends Component {
   state = { value: {} };
 
   componentDidMount() {
-    const { selectStation, location } = this.props;
-    this.setState({ selection: this.props.stations[0] }, () =>
-      selectStation(this.state.selection, location)
+    const { selectStation, location, stations } = this.props;
+    const firstStation = stations[0].stationId;
+    this.setState(
+      {
+        value: firstStation
+      },
+      () => selectStation(firstStation, location)
     );
   }
 
-  handleChange = event => {
+  handleChange = (e, { value }) => {
     const { selectStation, location } = this.props;
-    const station = event.targetValue;
-    this.setState({ selection: station }, () =>
-      selectStation(station, location)
-    );
+    this.setState({ value }, selectStation(value, location));
   };
 
   render() {
     const stations = this.props.stations.map(station => ({
       key: station.GIS_ID,
-      value: station,
-      text: station.NAME
+      text: station.NAME,
+      value: station.stationId
     }));
+
     return (
       <Form.Select
         options={stations}
         fluid
         label="Station"
+        onChange={this.handleChange}
         value={this.state.value}
       />
     );

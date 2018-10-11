@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card, Header } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 
 import getStationInfo from '../../actions/tripActions';
 import { lines, colors } from '../../helpers/Lines';
@@ -9,7 +9,14 @@ import NextTrains from '../../components/NextTrains/NextTrains';
 class TripInfoContainer extends Component {
   componentDidMount() {
     const { fromStation, getStationInfo } = this.props;
-    getStationInfo(fromStation.stationId);
+    getStationInfo(fromStation);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { fromStation, getStationInfo } = this.props;
+    if (fromStation !== prevProps.fromStation) {
+      getStationInfo(fromStation);
+    }
   }
 
   groupTrainsByTrack = () => {
