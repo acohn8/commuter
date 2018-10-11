@@ -1,13 +1,14 @@
 import propTypes from 'prop-types';
 import React from 'react';
+import { Form } from 'semantic-ui-react';
 
-import styles from './SearchBar.module.css';
-
-const SearchBar = ({ value, handleChange, location }) => (
-  <input
-    type="text"
-    className={styles.searchBar}
+const SearchBar = ({ value, handleChange, location, label }) => (
+  <Form.Input
+    label={label}
+    icon="search"
+    placeholder="Search..."
     value={value}
+    fluid
     onChange={e => handleChange(e, location)}
   />
 );
@@ -15,7 +16,8 @@ const SearchBar = ({ value, handleChange, location }) => (
 SearchBar.propTypes = {
   value: propTypes.string,
   location: propTypes.string,
-  handleChange: propTypes.func
+  handleChange: propTypes.func,
+  label: propTypes.string
 };
 
 export default SearchBar;

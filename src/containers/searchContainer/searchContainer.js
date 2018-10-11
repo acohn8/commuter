@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Form } from 'semantic-ui-react';
 
 import {
   fetchAddressSuggestions,
@@ -63,29 +64,35 @@ class SearchContainer extends Component {
       selectStation
     } = this.props;
     return (
-      <div className={styles.suggestionContainer}>
-        <form className={styles.searchForm}>
-          <p>From:</p>
-          <SearchBar
-            value={this.determineSearchValue('from')}
-            handleChange={this.handleChange}
-            location={'from'}
-          />
-          {fromStations.length > 0 && (
-            <StationDropdown
-              stations={fromStations}
-              selectStation={selectStation}
-              location={'from'}
-            />
-          )}
+      <div>
+        <Form>
+          <Form.Group widths="equal">
+            <Form.Field>
+              <SearchBar
+                value={this.determineSearchValue('from')}
+                handleChange={this.handleChange}
+                location={'from'}
+                label={'From'}
+              />
+            </Form.Field>
+            {fromStations.length > 0 && (
+              <StationDropdown
+                stations={fromStations}
+                selectStation={selectStation}
+                location={'from'}
+              />
+            )}
+          </Form.Group>
           {this.props.fromAddress && (
             <>
-              <p>To:</p>
-              <SearchBar
-                value={this.determineSearchValue('to')}
-                handleChange={this.handleChange}
-                location={'to'}
-              />
+              <Form.Field>
+                <SearchBar
+                  value={this.determineSearchValue('to')}
+                  handleChange={this.handleChange}
+                  location={'to'}
+                  label={'To'}
+                />
+              </Form.Field>
               {toStations.length > 0 && (
                 <StationDropdown
                   stations={toStations}
@@ -95,7 +102,7 @@ class SearchContainer extends Component {
               )}
             </>
           )}
-        </form>
+        </Form>
         {this.props.addressSuggestions && (
           <div className={styles.suggestionOverlay}>
             {addressSuggestions.map(suggestion => (

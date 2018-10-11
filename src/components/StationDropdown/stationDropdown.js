@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Form } from 'semantic-ui-react';
 
 export default class StationDropdown extends Component {
-  state = { toStation: {}, fromStation: {} };
+  state = { value: {} };
 
   componentDidMount() {
     const { selectStation, location } = this.props;
@@ -19,13 +20,18 @@ export default class StationDropdown extends Component {
   };
 
   render() {
-    const { stations } = this.props;
+    const stations = this.props.stations.map(station => ({
+      key: station.GIS_ID,
+      value: station,
+      text: station.NAME
+    }));
     return (
-      <select>
-        {stations.map(station => (
-          <option value={station.NAME}>{station.NAME}</option>
-        ))}
-      </select>
+      <Form.Select
+        options={stations}
+        fluid
+        label="Station"
+        value={this.state.value}
+      />
     );
   }
 }
