@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Card, Header } from 'semantic-ui-react';
 
 import getStationInfo from '../../actions/tripActions';
+import { lines, colors } from '../../helpers/Lines';
 import NextTrains from '../../components/NextTrains/NextTrains';
-import styles from './TripInfoContainer.module.css';
 
 class TripInfoContainer extends Component {
   componentDidMount() {
@@ -34,25 +35,20 @@ class TripInfoContainer extends Component {
     const tracks = Object.keys(trains);
     return (
       <div>
-        <div className={styles.linesContainer}>
-          {tracks.map(track => (
-            <div className={styles.stationLines}>
-              <h4 className={styles.lineHeader}>{track}</h4>
-              <div className={styles.trainsContainer}>
-                {trains[track]['1'].map(train => (
-                  <div className={styles.nextTrains}>
-                    <NextTrains train={train} />
-                  </div>
-                ))}
-                {trains[track]['2'].map(train => (
-                  <div className={styles.nextTrains}>
-                    <NextTrains train={train} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <Card.Group centered itemsPerRow={4}>
+          {tracks.map(track => [
+            <NextTrains
+              trains={trains[track]['1']}
+              line={lines[track]}
+              color={colors[track]}
+            />,
+            <NextTrains
+              trains={trains[track]['2']}
+              line={lines[track]}
+              color={colors[track]}
+            />
+          ])}
+        </Card.Group>
       </div>
     );
   }
