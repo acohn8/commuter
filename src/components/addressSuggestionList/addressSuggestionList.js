@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 
-import styles from './addressSuggestions.module.css';
+import styles from './AddressSuggestions.module.css';
 
 const AddressSuggestionList = ({ address, handleClick, coords }) => (
   <div

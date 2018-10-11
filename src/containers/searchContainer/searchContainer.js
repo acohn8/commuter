@@ -13,7 +13,7 @@ import AddressSuggestionList from '../../components/AddressSuggestionList/Addres
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { selectStation } from '../../actions/stationActions';
 import styles from './SearchContainer.module.css';
-import StationDropdown from '../../components/StationDropdown/stationDropdown';
+import StationDropdown from '../../components/StationDropdown/StationDropdown';
 
 class SearchContainer extends Component {
   handleChange = (event, location) => {
