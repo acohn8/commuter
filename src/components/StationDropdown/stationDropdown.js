@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 
 export default class StationDropdown extends Component {
-  state = { value: {} };
+  state = { value: '' };
 
   componentDidMount() {
     const { selectStation, location, stations } = this.props;
-    const firstStation = stations[0].stationId;
+    const firstStation = stations[0]['station-code'];
     this.setState(
       {
         value: firstStation
@@ -22,9 +22,9 @@ export default class StationDropdown extends Component {
 
   render() {
     const stations = this.props.stations.map(station => ({
-      key: station.GIS_ID,
-      text: station.NAME,
-      value: station.stationId
+      key: station['station-code'],
+      text: station.name,
+      value: station['station-code']
     }));
 
     return (

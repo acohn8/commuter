@@ -45,11 +45,13 @@ class TripInfoContainer extends Component {
         <Card.Group centered itemsPerRow={4}>
           {tracks.map(track => [
             <NextTrains
+              key={`${track}1`}
               trains={trains[track]['1']}
               line={lines[track]}
               color={colors[track]}
             />,
             <NextTrains
+              key={`${track}2`}
               trains={trains[track]['2']}
               line={lines[track]}
               color={colors[track]}

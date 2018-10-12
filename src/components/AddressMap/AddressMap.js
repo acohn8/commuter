@@ -1,4 +1,3 @@
-import distance from '@turf/distance';
 import bbox from '@turf/bbox';
 import mapboxgl from 'mapbox-gl';
 import React from 'react';
@@ -31,12 +30,6 @@ export default class AddressMap extends React.Component {
       }
       this.map.addLayer(this.props.points);
       this.zoomToSelection();
-      if (
-        (this.props.from.address && !this.props.fromStations.length) ||
-        (this.props.to.address && !this.props.toStations.length)
-      ) {
-        this.filterStations();
-      }
     }
   }
 
@@ -130,44 +123,6 @@ export default class AddressMap extends React.Component {
     return this.map.queryRenderedFeatures({
       layers: ['metro-stations-regional']
     });
-  };
-
-  addDistanceToStations = () => {
-    const from =
-      this.props.focusedSearchField === 'from'
-        ? this.props.from.coords
-        : this.props.to.coords;
-    const stations = this.getStationsFromTile();
-    return stations.map(station => {
-      station.properties.distance = distance(
-        from,
-        station.geometry.coordinates,
-        {
-          units: 'miles'
-        }
-      );
-      return station;
-    });
-  };
-
-  filterStations = () => {
-    //filters stations within 2 miles. TODO: handle suburbs where people may live further from stations
-    const filteredStations = this.addDistanceToStations().filter(
-      station => station.properties.distance < 2
-    );
-    const sortedStations = filteredStations
-      .sort((a, b) => a.properties.distance - b.properties.distance)
-      .slice(0, 2)
-      .map(station => station.properties);
-    const stationsWithIds = sortedStations.map(station => {
-      const stationId = station.TRAININFO_.split('#')[1].split('|')[0];
-      station.stationId = stationId;
-      return station;
-    });
-    this.props.setStationOptions(
-      stationsWithIds,
-      this.props.focusedSearchField
-    );
   };
 
   render() {

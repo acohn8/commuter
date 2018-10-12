@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import * as constants from '../constants';
+import { setStationOptions } from './stationActions';
 
 const fetchAddressSuggestions = address => async dispatch => {
   if (address.length) {
@@ -41,6 +42,7 @@ const setSelectedAddress = ({ address, coords }, location) => dispatch => {
     coords,
     location
   });
+  dispatch(setStationOptions(coords, location));
 };
 
 const setFocusedField = focusedSearchField => dispatch =>

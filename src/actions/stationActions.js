@@ -1,6 +1,14 @@
+import axios from 'axios';
+
 import * as constants from '../constants';
 
-const setStationOptions = (stations, location) => dispatch => {
+const setStationOptions = (coords, location) => async dispatch => {
+  const [lng, lat] = coords;
+  const url = `stations/lat/${lat}/lng/${lng}`;
+  const response = await axios.get(`http://localhost:3000/api/v1/${url}`);
+  const stations = response.data.data.map(station => station.attributes);
+
+  console.log(stations);
   if (location === 'to') {
     dispatch({ type: constants.SET_TO_STATION_OPTIONS, stations });
   } else if (location === 'from') {
