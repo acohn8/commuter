@@ -6,7 +6,8 @@ export default class StationDropdown extends Component {
 
   componentDidMount() {
     const { selectStation, location, stations } = this.props;
-    const firstStation = stations[0]['station-code'];
+    // transfer stations have multiple codes, but only one is necessary to get all the trains.
+    const firstStation = stations[0].station_codes[0].station_code;
     this.setState(
       {
         value: firstStation
@@ -22,9 +23,9 @@ export default class StationDropdown extends Component {
 
   render() {
     const stations = this.props.stations.map(station => ({
-      key: station['station-code'],
+      key: station.station_codes[0].station_code,
       text: station.name,
-      value: station['station-code']
+      value: station.station_codes[0].station_code
     }));
 
     return (

@@ -6,9 +6,8 @@ const setStationOptions = (coords, location) => async dispatch => {
   const [lng, lat] = coords;
   const url = `stations/lat/${lat}/lng/${lng}`;
   const response = await axios.get(`http://localhost:3000/api/v1/${url}`);
-  const stations = response.data.data.map(station => station.attributes);
+  const stations = response.data;
 
-  console.log(stations);
   if (location === 'to') {
     dispatch({ type: constants.SET_TO_STATION_OPTIONS, stations });
   } else if (location === 'from') {
