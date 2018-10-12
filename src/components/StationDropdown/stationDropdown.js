@@ -18,6 +18,7 @@ export default class StationDropdown extends Component {
 
   handleChange = (e, { value }) => {
     const { selectStation, location } = this.props;
+    console.log(value);
     this.setState({ value }, selectStation(value, location));
   };
 
