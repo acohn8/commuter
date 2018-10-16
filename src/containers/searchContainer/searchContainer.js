@@ -84,23 +84,23 @@ class SearchContainer extends Component {
             )}
           </Form.Group>
           {this.props.fromAddress && (
-            <>
+            <Form.Group widths="equal">
               <Form.Field>
                 <SearchBar
                   value={this.determineSearchValue('to')}
                   handleChange={this.handleChange}
                   location={'to'}
                   label={'To'}
-                />
+                  />
               </Form.Field>
               {toStations.length > 0 && (
                 <StationDropdown
-                  stations={toStations}
-                  selectStation={selectStation}
-                  location={'to'}
+                stations={toStations}
+                selectStation={selectStation}
+                location={'to'}
                 />
-              )}
-            </>
+                )}
+        </Form.Group>
           )}
         </Form>
         {this.props.addressSuggestions && (

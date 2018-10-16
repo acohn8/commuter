@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 
 import getStationInfo from '../../actions/tripActions';
+import getWeather from '../../actions/weatherActions';
 import { lines, colors } from '../../helpers/Lines';
 import NextTrains from '../../components/NextTrains/NextTrains';
+import WeatherChartContainer from '../WeatherChartContainer/WeatherChartContainer';
 
 class TripInfoContainer extends Component {
   componentDidMount() {
-    const { fromStation, getStationInfo } = this.props;
+    const { fromStation, getStationInfo, getWeather } = this.props;
     getStationInfo(fromStation);
+    getWeather();
   }
 
   componentDidUpdate(prevProps) {
@@ -40,6 +43,7 @@ class TripInfoContainer extends Component {
   render() {
     const trains = this.groupTrainsByTrack();
     const tracks = Object.keys(trains);
+    const { hourlyWeather } = this.props;
     return (
       <div>
         <Card.Group centered itemsPerRow={4}>
@@ -58,6 +62,9 @@ class TripInfoContainer extends Component {
             />
           ])}
         </Card.Group>
+        <div style={{ height: '600px' }}>
+          {hourlyWeather.data !== undefined && <WeatherChartContainer />}
+        </div>
       </div>
     );
   }
@@ -65,11 +72,13 @@ class TripInfoContainer extends Component {
 
 const mapStateToProps = state => ({
   fromStation: state.stations.selectedFromStation,
-  nextTrains: state.trips.nextTrains
+  nextTrains: state.trips.nextTrains,
+  hourlyWeather: state.weather.hourly
 });
 
 const mapDispatchToProps = dispatch => ({
-  getStationInfo: stationId => dispatch(getStationInfo(stationId))
+  getStationInfo: stationId => dispatch(getStationInfo(stationId)),
+  getWeather: () => dispatch(getWeather())
 });
 
 export default connect(
